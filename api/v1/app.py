@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+'''flask skeleton'''
 import os
 from flask import Flask
 from models import storage
