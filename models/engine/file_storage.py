@@ -76,13 +76,16 @@ class FileStorage:
                 return val
         return None
 
-    def count(self, cls=None):
+    def count(self, cls=None, by_type=False):
         """count the number of objects in storage by type"""
-        counts = {}
-        for obj in self.all(cls).values():
-            obj_type = obj.__class__.__tablename__
-            if obj_type in counts:
-                counts[obj_type] += 1
-            else:
-                counts[obj_type] = 1
-        return counts
+        if by_type:
+            counts = {}
+            for obj in self.all(cls).values():
+                obj_type = obj.__class__.__tablename__
+                if obj_type in counts:
+                    counts[obj_type] += 1
+                else:
+                    counts[obj_type] = 1
+            return counts
+        else:
+            return len(self.all(cls))
