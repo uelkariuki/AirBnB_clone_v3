@@ -6,7 +6,6 @@ from api.v1.views import app_views
 from flask import jsonify
 from models import storage
 import json
-""" Importing the required modules"""
 
 
 @app_views.route('/status', methods=['GET'])
