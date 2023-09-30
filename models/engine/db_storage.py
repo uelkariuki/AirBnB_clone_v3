@@ -85,8 +85,8 @@ class DBStorage:
     def count(self, cls=None):
         """count the number of objects in storage by type"""
         counts = {}
-        for obj in self.all(cls):
-            obj_type = obj.split('.')[0]
+        for obj in self.all(cls).values():
+            obj_type = obj.__class__.__tablename__
             if obj_type in counts:
                 counts[obj_type] += 1
             else:

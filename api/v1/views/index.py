@@ -21,5 +21,4 @@ def stats():
     Create an endpoint that retrieves the number of each objects by type
     """
     number_of_objects = storage.count()
-    result = json.dumps(number_of_objects, indent=4)
-    return result
+    return jsonify(number_of_objects)
