@@ -34,7 +34,7 @@ class User(BaseModel, Base):
         """ Password getter method"""
         return self.__password
 
-    @password_setter
+    @password.setter
     def password(self, pwd):
         """
         Hash the password using MD5
