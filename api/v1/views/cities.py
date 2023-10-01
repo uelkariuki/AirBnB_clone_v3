@@ -8,7 +8,7 @@ from models import storage
 from api.v1.views import app_views
 
 
-@app_views.route('/states/<state_id>/cities', methods=['GET'])
+@app_views.route('/states/<state_id>/cities/', methods=['GET'])
 def get_cities(state_id):
     state = storage.get(State, state_id)
     if not state:
