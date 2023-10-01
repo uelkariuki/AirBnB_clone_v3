@@ -30,9 +30,9 @@ class User(BaseModel, Base):
         super().__init__(*args, **kwargs)
 
     @property
-    def password:
-        """ Password method"""
-        self.__password
+    def password(self):
+        """ Password getter method"""
+        return self.__password
 
     @password_setter
     def password(self, pwd):
