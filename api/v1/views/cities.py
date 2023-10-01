@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 '''handle all default RESTFul API actions for City objects'''
-from flask import abort, jsonify
+from flask import abort, jsonify, request
 from models.city import City
 from models.state import State
 from models import storage
@@ -62,5 +62,5 @@ def update_city(city_id):
     for key, value in data.items():
         if key not in ["id", "state_id", "created_at", "updated_at"]:
             setattr(city, key, value)
-    city.save()
+    storage.save()
     return jsonify(city.to_dict()), 200
