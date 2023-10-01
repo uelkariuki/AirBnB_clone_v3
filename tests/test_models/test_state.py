@@ -8,8 +8,8 @@ import inspect
 import models
 from models import state
 from models.base_model import BaseModel
-import pep8
 import unittest
+import pep8
 State = state.State
 
 
