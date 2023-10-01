@@ -32,7 +32,7 @@ class User(BaseModel, Base):
     @property
     def password(self):
         """ Password getter method"""
-        return self.__password
+        return self.password
 
     @password.setter
     def password(self, pwd):
@@ -41,4 +41,4 @@ class User(BaseModel, Base):
         Args:
         pwd: the password to be hashed
         """
-        self.__password = hashlib.md5(pwd.encode()).hexdigest()
+        self.password = hashlib.md5(pwd.encode()).hexdigest()
