@@ -73,7 +73,6 @@ def post_place(city_id):
 def put_place(place_id):
     """ Updates a Place object"""
     place = storage.get(Place, place_id)
-    B
     if place is None:
         abort(404)
     request_data = request.get_json()
@@ -86,7 +85,7 @@ def put_place(place_id):
     return jsonify(place.to_dict()), 200
 
 
-@app_views.route('/places_search', methods=['POST'])
+@app_views.route('/places_search', methods=['POST'], strict_slashes=False)
 def places_search():
     """
     Retrieves all Place objects depending on the JSON
@@ -106,11 +105,25 @@ def places_search():
         places = [place.to_dict() for place in storage.all(Place).values()]
 
     else:
-        for place in storage.all(Place).values():
-            if (not states or place.city.state.id in
-                    states) and (not cities or place.city.id in cities):
-                if not amenities or all(amenity.id in amenities
-                                        for amenity in place.amenities):
-                    places.append(place.to_dict())
+        places = set()
 
-    return jsonify(places)
+        for state_id in states:
+            state = storage.get(State, state_id)
+            if state:
+                places.update(state.cities)
+        for city_id in cities:
+            city = storage.get(City, city_id)
+            if city:
+                places.update(city.places)
+
+        for amenity_id in amenities:
+            amenity = storage.get(Amenity, amenity_id)
+            if amenity:
+                places = [place for place in places if amenity
+                          in place.amenities]
+
+        json_places = [place.to_dict() for place in places]
+        for json_place in json_places:
+            json_place.pop('amenities', None)
+
+    return jsonify(json_places)
