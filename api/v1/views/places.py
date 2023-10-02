@@ -91,9 +91,9 @@ def places_search():
     Retrieves all Place objects depending on the JSON
     in the body of the request
     """
-    request_data = request.get_json()
-    if not request_data:
+    if not request.is_json:
         abort(400, description="Not a JSON")
+    request_data = request.get_json()
     states = request_data.get('states', [])
     cities = request_data.get('cities', [])
     amenities = request_data.get('amenities', [])
@@ -117,11 +117,12 @@ def places_search():
             if city:
                 places.update(city.places)
 
-        for amenity_id in amenities:
-            amenity = storage.get(Amenity, amenity_id)
-            if amenity:
-                places = [place for place in places if amenity
-                          in place.amenities]
+        if amenities:
+            for amenity_id in amenities:
+                amenity = storage.get(Amenity, amenity_id)
+                if amenity:
+                    places = [place for place in places if amenity
+                              in place.amenities]
 
         json_places = [place.to_dict() for place in places]
         for json_place in json_places:
