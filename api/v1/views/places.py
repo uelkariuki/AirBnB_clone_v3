@@ -10,6 +10,7 @@ from models import storage
 from models.place import Place
 from models.city import City
 from models.user import User
+from models.state import State
 """ Importing the required modules"""
 
 
@@ -72,6 +73,7 @@ def post_place(city_id):
 def put_place(place_id):
     """ Updates a Place object"""
     place = storage.get(Place, place_id)
+    B
     if place is None:
         abort(404)
     request_data = request.get_json()
@@ -82,3 +84,33 @@ def put_place(place_id):
             setattr(place, key, value)
     place.save()
     return jsonify(place.to_dict()), 200
+
+
+@app_views.route('/places_search', methods=['POST'])
+def places_search():
+    """
+    Retrieves all Place objects depending on the JSON
+    in the body of the request
+    """
+    request_data = request.get_json()
+    if not request_data:
+        abort(400, description="Not a JSON")
+    states = request_data.get('states', [])
+    cities = request_data.get('cities', [])
+    amenities = request_data.get('amenities', [])
+
+    places = []
+
+    if not any([states, cities, amenities]):
+        # if all lists are empty retrieve all Place objects
+        places = [place.to_dict() for place in storage.all(Place).values()]
+
+    else:
+        for place in storage.all(Place).values():
+            if (not states or place.city.state.id in
+                    states) and (not cities or place.city.id in cities):
+                if not amenities or all(amenity.id in amenities
+                                        for amenity in place.amenities):
+                    places.append(place.to_dict())
+
+    return jsonify(places)
