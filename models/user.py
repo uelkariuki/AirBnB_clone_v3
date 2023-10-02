@@ -14,7 +14,7 @@ class User(BaseModel, Base):
     if models.storage_t == 'db':
         __tablename__ = 'users'
         email = Column(String(128), nullable=False)
-        password = Column("password", nullable=False)
+        password = Column(String(128), nullable=False)
         first_name = Column(String(128), nullable=True)
         last_name = Column(String(128), nullable=True)
         places = relationship("Place", backref="user")
@@ -27,21 +27,12 @@ class User(BaseModel, Base):
 
     def __init__(self, *args, **kwargs):
         """initializes user"""
-        if kwargs.get("password"):
-            kwargs["password"] = md5(
-                    kwargs["password"].encode('utf-8')).hexdigest()
         super().__init__(*args, **kwargs)
 
-    @property
-    def password(self):
-        """ Password getter method"""
-        return self.__dict__.get("password")
-
-    @password.setter
-    def password(self, password):
+    def __setattr__(self, name, value):
         """
         Hash the password using MD5
-        Args:
-        pwd: the password to be hashed
         """
-        self.__dict__["password"] = md5(password.encode('utf-8')).hexdigest()
+        if name == "password":
+            value = md5(value.encode()).hexdigest()
+        super().__setattr__(name, value)
