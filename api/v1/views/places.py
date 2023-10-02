@@ -94,9 +94,9 @@ def places_search():
     if not request.is_json:
         abort(400, description="Not a JSON")
     request_data = request.get_json()
-    states = request_data.get('states', [])
-    cities = request_data.get('cities', [])
-    amenities = request_data.get('amenities', [])
+    states = request_data.get('states', None)
+    cities = request_data.get('cities', None)
+    amenities = request_data.get('amenities', None)
 
     places = []
 
