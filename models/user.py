@@ -35,10 +35,10 @@ class User(BaseModel, Base):
         return self.__dict__.get("password")
 
     @password.setter
-    def password(self, pwd):
+    def password(self, password):
         """
         Hash the password using MD5
         Args:
         pwd: the password to be hashed
         """
-        self.__dict__["password"] = md5(pwd.encode('utf-8')).hexdigest()
+        self.__dict__["password"] = md5(password.encode('utf-8')).hexdigest()
