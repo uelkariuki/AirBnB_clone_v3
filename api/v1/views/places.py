@@ -120,11 +120,12 @@ def places_search():
                 places.update(city.places)
 
         if amenities:
-            for amenity_id in amenities:
-                amenity = storage.get(Amenity, amenity_id)
-                if amenity:
-                    places = [place for place in places if amenity
-                              in place.amenities]
+            for place in list(places):
+                for amenity_id in amenities:
+                    amenity = storage.get(Amenity, amenity_id)
+                    if amenity and amenity not in place.amenities:
+                        places.remove(place)
+                        break
 
         json_places = [place.to_dict() for place in places]
         for json_place in json_places:
