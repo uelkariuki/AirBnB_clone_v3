@@ -122,10 +122,10 @@ def places_search():
         if amenities:
             for place in list(places):
                 place_amenities = [amenity.id for amenity in place.amenities]
-                for amenity_id in amenities:
-                    if amenity_id not in place_amenities:
-                        places.remove(place)
-                        break
+
+            if not all(amenity_id in place_amenities
+                       for amenity_id in amenities):
+                places.remove(place)
         json_places = [place.to_dict() for place in places]
         for json_place in json_places:
             json_place.pop('amenities', None)
