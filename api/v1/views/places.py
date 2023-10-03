@@ -103,6 +103,8 @@ def places_search():
     if not any([states, cities, amenities]):
         # if all lists are empty retrieve all Place objects
         places = [place.to_dict() for place in storage.all(Place).values()]
+        if not places:
+            return jsonify({"error": "No places found"})
 
     else:
         places = set()
@@ -127,5 +129,8 @@ def places_search():
         json_places = [place.to_dict() for place in places]
         for json_place in json_places:
             json_place.pop('amenities', None)
+
+        if not json_places:
+            return jsonify({"error": "No places found"})
 
     return jsonify(json_places)
