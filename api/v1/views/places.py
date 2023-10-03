@@ -121,9 +121,9 @@ def places_search():
 
         if amenities:
             for place in list(places):
+                place_amenities = [amenity.id for amenity in place.amenities]
                 for amenity_id in amenities:
-                    amenity = storage.get(Amenity, amenity_id)
-                    if amenity and amenity not in place.amenities:
+                    if amenity_id not in place_amenities:
                         places.remove(place)
                         break
 
