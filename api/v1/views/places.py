@@ -126,7 +126,6 @@ def places_search():
                     if amenity_id not in place_amenities:
                         places.remove(place)
                         break
-
         json_places = [place.to_dict() for place in places]
         for json_place in json_places:
             json_place.pop('amenities', None)
